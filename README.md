@@ -1,4 +1,4 @@
 yak
 ===
 
-Yet Another Kossel - design based on Wolfstock derivative of Kossel, based on OpenBeam and Open Rail
+Yet Another Kossel - design based on Wolfmanjim's Wolfstock derivative of Kossel, mine uses OpenBeam and Open Rail instead of Mitsumi stuff.
