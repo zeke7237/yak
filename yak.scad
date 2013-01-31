@@ -1,11 +1,12 @@
 // yet another kossel
+$fn=1000;
 
-side=475;
+side=490;
 height=1000;
 h = sqrt(3) / 3 * side;   //height_to_geometric_center
 beam_width=15;										// width of openbeam
-traveller_offset_x=40.1-(beam_width/2);	// distance from vertical beam surface to plate+15mm
-traveller_offset_yz=50.1-(beam_width/2);	// allow 10mm extra for the angle on y and z
+traveller_offset_x=29.75-(beam_width/2);	// distance from vertical beam surface to plate+15mm
+traveller_offset_yz=39.75-(beam_width/2);	// allow 10mm extra for the angle on y and z
 
 yz_length=side+(2*traveller_offset_yz);
 x_length=side/2*sqrt(3)-(beam_width/2)+traveller_offset_x;
@@ -29,12 +30,11 @@ module beam(length) {
 
 echo("x-length",x_length," yz-length",yz_length," total=",x_length+yz_length);
 
-color("yellow",0.1){
-	difference(){
-		cylinder(r=h,h=height);
-		translate([0,0,-1])cylinder(r=h-1,h=height+2);
-	}
+%difference(){
+	cylinder(r=h,h=height);
+	translate([0,0,-1])cylinder(r=h-1,h=height+2);
 }
+
 
 translate([-sin(30)*h+x_length/2,0,beam_width/2])beam(x_length);
 rotate([0,0,90])translate([0,sin(30)*h,beam_width/2])beam(yz_length);
