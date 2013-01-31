@@ -1,4 +1,6 @@
 // yet another kossel
+include <traveller.scad>
+
 $fn=1000;
 
 side=490;
@@ -44,3 +46,9 @@ color("blue")translate(vertex_z)cube([2,2,15],center=true);
 color("red")translate([0,0,-20])translate(tower_x)tower(height);
 color("red")translate([0,0,-20])translate(tower_y)tower(height);
 color("red")translate([0,0,-20])translate(tower_z)tower(height);
+color("green")translate(tower_x)translate([-10,0,(height-20-beam_width/2)/2+15])rotate([0,90,0])rail(height-20-beam_width/2);
+translate(tower_x)translate([-8.55,0,400])rotate([0,90,0])traveller();
+color("green")translate(tower_y)translate([0,-10,(height-20-beam_width/2)/2+15])rotate([90,90,0])rail(height-20-beam_width/2);
+translate([0,traveller_offset_yz+1.45-19.4,400])translate(vertex_y)rotate([0,90,90])traveller();
+color("green")translate(tower_z)translate([0,10,(height-20-beam_width/2)/2+15])rotate([90,90,0])rail(height-20-beam_width/2);
+translate([0,traveller_offset_yz+1.45-19.4,400])translate(vertex_y)rotate([0,90,90])traveller();
