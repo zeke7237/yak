@@ -1,17 +1,20 @@
-include </home/john/work/yak/20mmplate.scad>
-include </home/john/work/yak/metric_fasteners.scad>
+use <20mmplate.scad>
+use <metric_fasteners.scad>
+use <openrailwheel.scad>
+use <openrail.scad>
+use <arm-plate.scad>
+use <arm-mount.scad>
+
+wheel_thickness=10.23;
+plate_thickness=2.9;
+spacer_height=6.2;
+
+wheel_offset=wheel_thickness/2 + plate_thickness/2 + spacer_height;
 
 module quarterinchspacer() {
 	difference() {
-		translate([0,0,1.6])cylinder(r=4,h=6.2);
-		translate([0,0,1.6])cylinder(r=2.5,h=6.2);
-	}
-}
-
-module wheel() {
-	difference() {
-		cylinder(r=12.25,h=10);
-		cylinder(r=3.1,h=10);
+		translate([0,0,plate_thickness/2])cylinder(r=4,h=spacer_height);
+		translate([0,0,plate_thickness/2])cylinder(r=2.5,h=spacer_height);
 	}
 }
 
@@ -27,17 +30,29 @@ module traveller() {
 	color("green")translate([22.5,-22.5,0])quarterinchspacer();
 	color("green")translate([-22.5,-22.5,0])quarterinchspacer();
 
-	translate([22.5,22.5,6.2+1.6])wheel();
-	translate([-22.5,22.5,6.2+1.6])wheel();
-	translate([22.5,-22.5,6.2+1.6])wheel();
-	translate([-22.5,-22.5,6.2+1.6])wheel();
+	wheel_z=plate_thickness/2+wheel_thickness/2+spacer_height;
+	translate([22.5,22.5,wheel_z])wheel();
+	translate([-22.5,22.5,wheel_z])wheel();
+	translate([22.5,-22.5,wheel_z])wheel();
+	translate([-22.5,-22.5,wheel_z])wheel();
+
 }
 
-module rail(length) {
-	union() {
-		cube([length,20,5], center=true);
-		translate([0,10,0])rotate([45,0,0])cube([length,3.2,3.2],center=true);
-		translate([0,-10,0])rotate([45,0,0])cube([length,3.2,3.2],center=true);
+module traveller_with_rail(length) {
+	traveller();
+	color("blue") {
+		rotate([90,0,0])translate([-10,plate_thickness/2+spacer_height+wheel_thickness/2,0])double_rail(length);
 	}
 }
+
+module x_traveller() {
+	traveller();
+	translate([0,0,-5-plate_thickness/2])rotate([180,0,0])backPlate();
+}
+module yz_traveller() {
+	traveller();
+	translate([0,0,-5-plate_thickness/2])rotate([180,0,0])sidePlate();
+}
+
+x_traveller();
 
