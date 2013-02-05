@@ -1,6 +1,6 @@
 include <configuration.scad>;
 
-ratio= 1.39;
+ratio= 1.2;
 separation = 37.2*ratio;
 radius = 33*ratio;
 height = 8;
