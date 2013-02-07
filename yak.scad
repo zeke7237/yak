@@ -7,17 +7,24 @@ use <effector.scad>
 
 $fn=100;
 
+// this is the stuff you'd probably want to change
 side=360;															// side of base triangle
-height=side*2;													// height of towers
-h = sqrt(3) / 3 * side;   									// normal from side to center
-beam_width=15;													// width of openbeam
 base_offset=35;													// height to Z0
+x_armplate_offset=13;
+yz_armplate_offset=29.75;
+brace_anchor=3*side/8;
+
+// everything else is calculated
+height=side*2;													// height of towers
+h = sqrt(3) / 3 * side;   									// normal from vertex to center
+
+beam_width=15;													// width of openbeam
 wheel_thickness=10.23;
 plate_thickness=2.9;
 rail_thickness=5;
 spacer_thickness=6.2;
-x_armplate_offset=13;
-yz_armplate_offset=29.75;
+brace_side=brace_anchor-beam_width-0.5*beam_width*sqrt(2);
+brace_hypotenuse=brace_side*sqrt(2);
 
 wheel_offset=wheel_thickness/2 + plate_thickness/2 + spacer_thickness;
 traveller_offset=wheel_offset+rail_thickness/2;
@@ -38,7 +45,7 @@ tower_z=[-sin(30)*h, -yz_length/2-beam_width/2,0];
 module tower(height,offset) {
 	union() {
 		beam(height);
-		translate([-10,-10,base_offset/2+beam_width/2])rotate([0,0,90])double_rail(height-(base_offset+beam_width));
+		translate([-10,-10,base_offset/2])rotate([0,0,90])double_rail(height-(base_offset+beam_width*2));
 	}
 }
 
@@ -47,7 +54,21 @@ module beam(length) {
 }
 
 echo("x-length",x_length," yz-length",yz_length," total=",x_length+yz_length);
-echo("tower length", height, "rail length", height-(base_offset+beam_width));
+echo("tower length", height, "rail length", height-(base_offset+beam_width*2));
+
+module tframe() {
+	translate([0,0,beam_width/2]) {
+		// T base
+		translate([h-x_length/2 +traveller_offset_x,0,0])rotate([0,90,0])beam(x_length);
+		translate([-sin(30)*h,0,0])rotate([90,0,0])beam(yz_length);
+	
+		// braces
+		for (z = [-1, 1]) {
+			translate([-sin(30)*h+brace_anchor/2,z*brace_anchor/2,0])rotate([90,0,45*z])beam(brace_hypotenuse);
+		}
+	}
+}
+
 
 // build area
 %difference(){
@@ -55,9 +76,8 @@ echo("tower length", height, "rail length", height-(base_offset+beam_width));
 	translate([0,0,-1])cylinder(r=h-1,h=height-base_offset);
 }
 
-// T base
-translate([h-x_length/2 +traveller_offset_x,0,beam_width/2])rotate([0,90,0])beam(x_length);
-translate([-sin(30)*h,0,beam_width/2])rotate([90,0,0])beam(yz_length);
+tframe();
+translate([0,0,height-base_offset-beam_width])tframe();
 
 //verticies
 color("blue")translate(vertex_x)cube([2,2,15],center=true);
