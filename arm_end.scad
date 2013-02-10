@@ -1,19 +1,25 @@
+// traxxas 5347
+// no, it doesn't look anything like the part .. but dimensionally it's fine ;)
+
 $fn=50;
 
-length_to_hole=14.25;
-hole=5.5;
-diameter=7;
+total_length=22;
+width_ball=10;
+thickness_ball=3;
+width_shaft=7;
+hole_offset=5;
+hole_radius=2.75;
 
-difference() {
+module arm_end() {
 	union() {
-		translate([0,0,1])cylinder(r=diameter/2, h=14.25, center=true);
-		translate([0,0,length_to_hole-6.125+hole/2])rotate([90,0,0]){
+		rotate([90,0,0]) {
 			difference() {
-				cylinder(r=5,h=3,center=true);
-				cylinder(r=hole/2,h=5,center=true);
+				cylinder(r=width_ball/2,h=thickness_ball,center=true);
+				cylinder(r=hole_radius,h=5,center=true);
 			}
 		}
+		translate([0,0,-(total_length-width_ball+2)/2-(width_ball/2)+2])cylinder(r1=width_shaft/2, r2=2, h=total_length-width_ball+2, center=true);
 	}
-translate([0,3,length_to_hole-6.125+hole/2])rotate([90,0,0])cylinder(r=5.1,h=3,center=true);
-translate([0,-3,length_to_hole-6.125+hole/2])rotate([90,0,0])cylinder(r=5.1,h=3,center=true);
 }
+
+arm_end();

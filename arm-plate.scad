@@ -1,7 +1,8 @@
+include <yak_config.scad>
 use <20mmplate.scad>
 use <arm-mount.scad>
 
-w= 52;
+w= separation;
 h= 25;
 thickness=4;
 basethickness=5;
@@ -32,11 +33,11 @@ module armPlate(w=w, h=h) {
 }
 
 module backPlate() {
-	union() translate([0,0,-basethickness/2]){
+	union() translate([0,0,basethickness/2]){
 		armPlate();
 		translate([0,-h/2+8/2,-1]) rotate([90,0,0]) arm_mount();
 	}
-}
+}	
 
 module sidePlate() {
 	aw1= tan(60)*sidel;
@@ -44,23 +45,27 @@ module sidePlate() {
 	sidel2= sin(30) * w/2;
 	aw2= tan(60)*(sidel2);
 	sl2= sidel2;
-	aw3= 19;
+	aw3= 16;
 	sl3= 5;
-	union() {
-		translate([0,0,-basethickness/2]) armPlate(w=aw1);
-
-		// vertical supports
-		translate([-aw1/2+thickness/2,-h/2+8/2,sl1/2]) cube([thickness, 8, sl1], center=true);
-		translate([0,-h/2+8/2,sl2/2-1]) cube([thickness+2, 8, sl2], center=true);
-		translate([aw3,-h/2+8/2,sl3/2]) cube([thickness+3, 8, sl3], center=true);
-
-		// buttress
-		translate([-aw1/2+thickness/2+thickness/2,-5,-0.1]) rotate([0,-90,0]) triangle(h-8, sl1, thickness);		
-
-		translate([0,0,offset]) rotate([0,30,0]) {
-			translate([0,-h/2+8/2,-1]) rotate([90,0,0]) arm_mount();
-			// extra thickness for base
-			translate([0,-h/2+8/2,-2]) cube([w-4,8,2], center=true);
+	translate([0,0,basethickness]) {
+		union() {
+			translate([0,0,-basethickness/2]) armPlate(w=aw1);
+	
+			// vertical supports
+			translate([-aw1/2+thickness/2,-h/2+8/2,sl1/2]) cube([thickness, 8, sl1], center=true);
+			translate([0,-h/2+8/2,sl2/2-1]) cube([thickness+2, 8, sl2], center=true);
+			translate([aw3,-h/2+8/2,sl3/2]) cube([thickness+3, 8, sl3], center=true);
+	
+			// buttress
+			translate([-aw1/2+thickness/2+thickness/2,-5,-0.1]) rotate([0,-90,0]) triangle(h-8, sl1, thickness);		
+	
+			translate([10/sqrt(3),-h/2+8/2,20])rotate([0,30,0])translate([-2.5,0,-10])  {
+				union() {
+					rotate([90,0,0])arm_mount();
+					// extra thickness for base
+					cube([w,8,2], center=true);
+				}
+			}
 		}
 	}
 }
@@ -75,6 +80,6 @@ module printPlate() {
 	translate([-30,0,0]) rotate([90,0,0]) sidePlate();
 }
 
-printPlate();
-
+//printPlate();
+sidePlate();
 //%translate([0,0,-3.175-thickness]) rotate([0,0,-90]) translate([-90/2,-160/2,0]) standard_wheel_carriage_plate();
