@@ -5,7 +5,7 @@ $fn=100;
 side=360;															// side of base triangle
 base_offset=35;													// height to Z0
 x_armplate_offset=12.5;										// offset from face of x plate to center of arm mount axis
-yz_armplate_offset=20*sqrt(3);						// same thing for the y and z plates
+yz_armplate_offset=20*sqrt(3)-5;							// same thing for the y and z plates
 brace_anchor=3*side/8;										// length of side of triangle brace
 
 // other constants

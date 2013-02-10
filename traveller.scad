@@ -48,8 +48,8 @@ module x_traveller() {
 }
 module yz_traveller() {
 	traveller();
-	translate([0,0,-5-plate_thickness/2])rotate([180,0,0])sidePlate();
+	translate([0,0,-plate_thickness/2])rotate([180,0,0])sidePlate();
 }
 
-x_traveller();
+yz_traveller();
 

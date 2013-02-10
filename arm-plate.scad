@@ -50,6 +50,7 @@ module sidePlate() {
 	translate([0,0,basethickness]) {
 		union() {
 			translate([0,0,-basethickness/2]) armPlate(w=aw1);
+//			translate([0,0,-basethickness-basethickness/2]) armPlate(w=aw1);
 	
 			// vertical supports
 			translate([-aw1/2+thickness/2,-h/2+8/2,sl1/2]) cube([thickness, 8, sl1], center=true);
